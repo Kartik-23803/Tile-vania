@@ -1,0 +1,190 @@
+> Sometimes there are multiple tile images contained in a single sprite image. To separate them, click on the image in this state and change the option of single to multiple in the inspector above sprite editor. Apply it and go to sprite editor. There, if the tiles are for example normal game tiles that fill up the space, then we can select on Sliced on the top and in that select Automatic in the first option and click on slice. This will create a white line around each image and then apply it to separate them.
+
+> In case the tiles are not of same size, select Slice by grid lines instead of Automatic. Then set the pixel count to 32 each and change the offset and padding of the cells as per your use. Padding is the spacing between 2 cells and offset is the distance of the grid cells from the top and the left side of the box. Click on slice and apply. These individual images will be seen when you click the arrow on the side of the sprite in the folder as in the folder it will still show as on whole sprite image.
+
+> First right click in hierarchy and add 2D->tilemap->rectangular. Then go to window->2D->tilemap palette. In the tilemap palette, select all the individual tiles from the first sprite that we sliced and drag them in the tilemap palatte. Now you can click on them and paste them in your scene screen and if you want to paste more than one of same type then hold on to the left click and drag on the scene screen where you want to paste them.
+
+> Click on edit in the tilemap palette and click on the first option at the top and and drag select all the tile you want to select then click on move (2nd option) to move them. Select on the eyedrop icon and select the tiles. Now you can paste that same number of tiles in the scene and also if you choose eraser then the size of the eraser will be the same as the number of tiles you selected from the eyedrop icon.
+
+> Now right click on tilemap grid and add a 2D->tilemap and name it background tilemap and now in the tile palette select active palette to vbackground tilemap and select and paste the green tiles in the palette. Select and cover the area in the scene in with tilemap.
+
+> Now go to the inspector of the platforms or bg tilemap and at the top in the option of layer, click on add layer and then click on sorting layer and click + sign, make 2 layers by adding + again and name one as platform and second as background. Click again on bg tilemap and scroll down. In sortinng layer option select background and in platforms tilemap go to same setting and select platforms. 
+
+> Now when you drag the layer of platform below that of background then the layer of platform that you created will be visible. The layer whose number is more will be as the topmost layer and it will cover the other layer below it.
+
+> Create a same tilemap for water and place its layer between platform and bg. Add water in the scene. Now go to package manager and install 2D tilemap editor and tilemap extras. If they are already installed then unlcok it.
+
+> Now go to sprites folder in assets and right click->2D->Tiles->Rule Tile. Add it to the platforms palette and select on the rule tile in the asset folder and in the inspector drag select a grass tile in the default type of rule tile.
+
+> Now below it in the list, click + and in the empty space beside it, drag the black tile which is present in the center of therock tiles and in the grid on its left select all arrows except in center. This means that when there is a straight line of rule tiles present they will be of the grass type but when it is of the setting that on empty space is surrounded by green tiles then the center tile will be of the black color or the tile that we selected by dragging.
+
+> If we click once there will be a green arrow which means that there is another tile there and if we click again, a cross will appear which means there is no tile at that point in the grid.
+
+> You can also add an option to paste random tiles in a rule by clicking on output and selecting random. Add the number of random tiles you want to add and then drag select the other tile sprite you want to add as random tile.
+
+> After setting up all the rules in the rule tile, go to window->Animation->Animator. Drag it beside the console window. This component helps us assign animations to the GameObjects through an animator controller which is an arrangement of animations and transitions.
+
+> Now open the spritesheet of the player that we separated into different sprites. Select the sprites in which the player is idle and standing (in this sheet number 5-8). Then on the selected sprites, right click and click on animation. This will create an animation which will loop the sprites from 5-8 repeatedly. Name it idle and drag it into a new folder that we created and name it animations.
+
+> Create a new game object in the hierarchy and name it as a Lizard and in the inspector add a component of animator in it.
+
+> In the animations folder right click and go to animation and add animation controller. In this controller drag the same file in the animator and the entry will get connected to this file named idle.
+
+> In the animator component that we added in our player, select controller and add the number 5 sprite of the player to it. Add another sorting layer like we did for water tile and platform tiles and name this one player and keep it at the bottom of all.
+
+> Now click on the idle animation in the animations folder and check the loop time box. This will start repeating the animations from 5-8. You can change the speed of this animations by clicking on their box in the animator below and change the speed.
+
+> Follow the same steps to create running animation. After dragging the running into the animator, right click on idle and select make transition. Mark the arrow to running and from running back to idle. Click on the arrow and set transition duration and offset to zero and exit time to zero too. Uncheck 'Has Exit Time' box. Do the same for the reverse transition too.
+
+> Follow the same steps and create animation for climbing.
+
+> Then in the animator, go to parameters and click on +. Make a bool condition for isRunning and isClimbing. Click on the arrow from idling to running and at the bottom in condition, add isRunning and set it as true. In the reverse transition set it as false. Do the same for isClimbing condition.
+
+> If we want to create a prefab and we can make a game object and after doing the needed changes to it we need to drag it down into the asset section. Prefabs are game objects which we have turned into reusable templates. The original template is called a prefab and the additional copies are called the instances.
+
+> Now we have to add colliders so that our player can stay on the platform. Click the platforms tilemap in hierarchy, in the inspector, add tilemap colloder 2D component and also add composite colllider component. On adding the second one it will add a rigid body 2D component too in which we have to chnage body type to static. In the Tilemap Collider 2D check the box that says 'Used by Composite'. This will remove the collider from between the gaps of 2 tiles and make a continuous layer of collider around the outer surface of the entire map.
+
+> Now go to pacckage manager and add input system and install it. Then click on player in hierarchy and add a player input component. In the inspector click on create actions and save it in a new folder named input systems. Drag that created action in the actions section in the inspector if not there and double click on the action. This will open a dialog box where there are already 3 options. Click on + at the top and add Jump action. Make the action type as a button then in binding click on path and then on listen. Then press space bar and it will show in the options, also tick the keyboard and mouse box below it.
+
+> On the + near Jump add another binding for gamepad and select button south. Save the asset or click on autosave and then in the inspector click on open input settings and click create input asset and close that window.
+
+> Create a c# script named PlayerMovement and in it add a namespace called UnityEngine.InputSystem. Create a Vector2 variable by name of moveInput. Create a new method of type void named OnMove(InputValue value) where InputValue is a type of variable and value is the name that we gave to it. Also add Run(); as we will make that method later.
+
+> In the method make moveInput = value.Get<Vector2>(); We did this so that when we press the arrow key then at that point itself it will store that 'value' of pressing the key in the 'moveInput'.
+
+> Now create a reference to rigid body 2D named myRigidbody. in the start method equal myRigidbody = GetComponent<RigidBody2D>();
+
+> In Run() write,  Vector2 playerVelocity = new Vector2(moveInput.x * runSpeed, myRigidbody.velocity.y);
+We created a serialized field at the top of type float and named it runSpeed. We multipled runSpeed with the moveInput's x component to give it more speed instead of the normal slow motion speed it has. In y component we kept the velocity same as the myRigidbody so that we cannot move up and down except if we are on a ladder.
+
+> Now we have to flip our player sprite to left when we turn left and right for the same. For that we use a bool playerHasHorizontalSpeed and equal it to Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon
+Here Mathf.Abs returns the absolute value of a number and ignores the sign. In this case the sign is of the x component of the velocity and Mathf.Epsilon means the value is greater than zero.
+
+> If this value is true, then transform.local scale i.e. the scale component of the transform section of the inspector = new Vector2(Mathf.Sign(myRigidbody.velocity.x), 1)
+Thsi means that the sign of the x component of the velocity will be the sign of the scale option in transform and this sign will show the direction in which the player is facing.
+
+> Now to play the animation of Running, copy the bool line from FlipSprite and paste it in Run(). At the top create a reference to the animator in the scene and name it myAnimator. Then write in there, myAnimator.SetBool("isRunnning", playerHasHorizontalSpeed). This will set the bool as true if the pHHS is true and false if false.
+
+> Create a method named OnJump(InputValue value). In here if(value.isPressed){ myRigidbody.velocity += new VEctor2(0f, jumpSpeed).
+This means that if the space bar is pressed, the velocity of the myRigidbody will be same + 0 in x axis but in y axis it will be jumpSpeed which is a serialized field.
+
+> Now click on platform tilemap and go to layer and add a layer in user 6 or anywhere and name it Ground. Again click on platform tilemap and set the layer to ground.
+
+> Now if(!myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) {return;}
+This means if the capsule collider 2D is touching a layer and that layer name is obtained by using LayerMask.GetMask which checks if the name of the layer is Ground then jump. This will avoid the player from jumping in mid air.
+
+> Now for climbing up a ladder create a new layer and a sorting layer for climbing and named the same and in sorting layer, set the layer of climbing before player and after platform. Drag the ladder sprite asset into the tile palette and save it in the tiles folder. Also in the hierarchy in the tilemap grid create another tilemap named climbing tilemap. Add tilemap collider2D and composite collider 2D to the climbing tilemap and set the rigidbody 2D as static. Check the used by composite in the tilemap collider.
+
+>  Create a new method named ClimbLadder in the script and write:
+Vector2 climbvelocity = new Vector2(myRigidbody.velocity.x, moveInput.y * climbSpeed);
+myRigidbody.velocity = climbVelocity;
+Also set a serialize field for climb velocity at the top.
+
+> Copy the first if statement of IsTouchingLayers from OnJump and paste it in here and give output as return.
+
+> Create a float at top named gravityScaleAtStart. In start, write: myRigidbody.gravityScale = gravityScaleAtStart.
+In the ClimbLadder method if statement write: myRigidbody.gravityScale = gravityScaleAtStart; before return;
+and outside the if statement at the last write: myRigidbody.gravityScale = 0f;
+This means that when the player is touching the ladder or climbing it the gravity will be 0 and otherwise it will be the same as it was in the start.
+
+> To create the climbing animation, copy the bool and myAnimator statement from Run() and paste them in ClimbLadder and name the bool as playerIsClimbingLadder and in the SetBool write isClimbing, playerIsClimbingLadder.
+
+> To create a cinemachine camera you need to first download the package of cinemachine from the package manager. Then in hierarchy add cinemachine->virtual camera and name it follow camera. In the inspector of the follow camera, switch body to framing composer and in follow section drag the player from hierarchy.
+
+> Next we have to confine our follow camera to the inside of the level. So click on background tilemap and add a component of Polygon collider 2D and edit it such that all the it covers the outer boundary of the level. You can create a wall of 2 tiles around the level and drag the line at the meeting point of 2 tiles.
+
+> Now go to follow camera inspector and scroll down to add extension and add 'CinemachineConfiner' (not 2D) and in the bounding shape, drag the background tilemap into it.
+
+> Now add 2 more layers named player and background (not in sorting layer) and then go to player and set the layer to player and in the background tilemap set the layer to background. Also go to Edit in the menubar and go to the bottom in project settings->physics 2D and uncheck the first line of background which means the background layer will not collide with any of the other layers.
+
+> Now in hierarchy go to cinemachine and add state driven camera, delete its child which is a follow camera. Now add a empty game object and name it cameras. Make the state driven camera as a child of 'Cameras'. Also add the 'Main Camera' as a child of the same. Add the follow up camera that we first created as the child of state driven camera and name it running camera, and ctrl+D the same andname it Idle camera. 
+
+> In state driven camera, in the animated target add our player as the object. Now go to the idle camera and click the solo button once and set the ortho size to 3.75 or 4 and then click the solo button again. Now go the run camera and set the ortho size to 5 and here we don't have to click the solo button. Clicking the solo in idle means it is the main camera and when the player is idle then that camera will work and the size will be 4 and when the player is running then the ortho size will become 5.
+
+ >  If we want to add some delay in zooming in or out of the cameras then in state driven camera in hierarchy we can go to custom blends and then select + and add that from 'this' camera to 'that' camera time will be this much seconds.
+
+>  Now add a new tilemap and name it bouncing tilemap. Add tilemap collder and composite collider in it. Add the mushroom sprite and in the sprite editor, go to custom physics outline and cover the top part of the mushroom. Then create a new folder in the assets named materials and in there right click->2D->physics material 2D. Name it bounce and set the bounciness to 1.5. In the tilmap collider of bouncing tilemap, drac select the same in the material section.
+
+> For the enemies, create a gameObject and add sprite renderer component, rigidbody, capsule collider, animator. In the sprite renderer drag the first separate sprite of enemy in the sprite section. Go to sprites, select all 6 and add Animation and name it Goop animation. Also add a animation controller and name it goop. Dreag into the animator option at the bottom. Start the loop time too. In the sprite editor in each cell, crop the bottom layer upto the feet of goop.
+
+> Create a new c# script and name it EnemyMovement. In there access the rigidbody2D and get its component in the start method. Create a box collider and set it at the face of goop, extend it some more at the bottom and keep its layer thin. In the update method make the myRigidbody.velocity equal to new Vector2(moveSpeed, 0f) (where move speed is a Serialize field).
+
+> Write a FlipEnemyFacing method in which copy the transform localScale line from PlayerMovement Script and just add - sign after the first bracket after Vector2 and put the whole line before comma in bracket. 
+
+> Create an OnTriggerExit2D method and write moveSpeed = -moveSpeed so that its value becomes negative and call the flip enemy method in this method. Now as soon as the box collider will exit from the collider of the ground at the end of curve, it will flip and go in the opposite direction but still it will collide with the player character.
+
+> Now we have to stop the player movement when it touches the enemy. So create a bool name isAlive = true and in the methods OnJump and OnMove write a statemen that if(!isAlive){ return; }
+Means that if the isAlive bool is false then return. Also in Die method, write:   if(myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemies"))){ isAlive = false }
+
+> Go to sprites and click on the sprite where the player is rolled up and go to right click->create->animation and name it Death. In the parameters create a trigger and name it dying, drag it into the animator. Click on 'Any State' and make a transition to Dying. Click on the arrow and set the transition duration to zero. Click on conditions and add Dying.
+
+> In Die method equal the myRigidbody.velocity to deathKick, create a serialized field of Vector2 type and name it the same and give the parameters as 10f, 10f.
+
+> Now create a hazard tilemap and sorting and normal layer of the same and drag the spikes sprite in the tile palette. In the sorting layer, keep the hazards layer above enemies layer. Now set up hazards in some places and in the Die method in the if statement, add  Hazards layer too: "Enemies", "Hazards". Add tilemap collider only in the hazards tilemap and now when the player touches the spikes then too the death animation will play and the controls of the player will be disabled.
+
+> Now to create a bullet, click on the arrow on the player and go to its prefab and add a game object as its child and name it gun and place it a little away from the player. Keep it in the same sorting layer as the player and create a new layer at the top. Go to project settings and in physics 2D unselect everything except enemies, hazards, ground and bullet.
+
+> In player movement script, make a method named OnFire as in the input system there is already an action name Fire. In this method write Instantiate(bullet, gun.position, transform.rotation) which is Instantiate(what, where(we place the spawn point just in front of the player, how).
+
+> Now click on no. 19 sprite of the player and drag it in the hierarchy and again drag it into the prefabs folder and delete it from the hierarchy. Create a new c# script and name it bullet. There make a serialized field of type float and name bulletSpeed.
+
+> Give a reference of rigidbody and PlayerMovement script which is in the player prefab in the hierarchy. Also create a float of name xSpeed. In start method, get component of myRigidbody, FindObjectOfType<PlayerMovement>() and equal it to player and equal the xSpeed to player.transform.localScale.x * bulletSpeed. We accessed PlayerMovement because we wanted to access the player prefab in hierarchy so we need to access one thing in that which is only present in it.
+
+> In Update method, equal myRigidbody.velocity to new Vector2(xSpeed, 0f) because we don't want speed in the y direction. Write a onTriggerEnter method and write that if other,tag == "Enemies" then Destroy(other.gameObject) and outside bracket write Destroy(gameObject). Create a OnCollisionEnter method and Destroy(gameObject).
+
+> Create a new c# script and name it LevelExit. Add name space of UnityEngine.SceneManagement. Serialize a field and name it levelLoadDelay of type float. In the OntriggerEnter method, write StartCoroutine(LoadNextLevel());
+
+> Create a new method but instead of void, write IEnumerator LoadNextLevel(). In this write yield return new WaitForSecondsRealtime(levelLoadDelay);
+int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+int nextSceneIndex = currentSceneIndex + 1;
+if(nextSceneIndex == SceneManager.sceneCountInBuildSettings)
+{
+	nextSceneIndex = 0;
+}
+SceneManager..LoadScene(nextSceneIndex);
+
+> Create an Empty game object in the level one and name it game session. Drag it into the prefab folder. Create a c# script and drag it into the gameSession prefab. In the script, write Awake intead of Start.
+
+> In Awake, create an int and name it numGameSessions and equal it to FindObjectsOfType<GameSession>().Length;  [note that it is FindObject's' is there and not just FindObject].
+if(numGameSessions > 1)
+{
+Destroy(gameObject)
+}
+else
+{
+DontDestroyOnLoad(gameObject)
+}
+
+> Remove the update method and instead make a public void ProcessPlayerDeath method and in there write if(playerLives > 1)
+{
+TakeLife();
+}
+else
+{
+ResetGameSession();
+]
+
+> In ResetGameSession write 
+SceneManager.LoadScene(0);
+Destroy(gameObject);
+
+> In TakeLife method, reduce playerLives by one. Make an int of name currentSceneIndex and equal it to SceneManage.GetActiveScene().buildIndex;
+SceneManager.LoadScene(currentSceneIndex);
+Here the scene in dex of the currently open scene is accessed by GetActiveScene which accesses the scenes feom the build Index.
+
+> Now go to level 2 and create an empty game object and name it pick ups and as its child add another empty G.O. and name it coin. Add a sprite renderer in coin and as it sprite, drag the first sprite from the folder. Also add circle collider and Animator. Set the layer and sortin layer as  'Interactables'. Now select all the sprites of the coin and go to create->animation and name it coin spin. Drag it into the animations folder and also create an animation controller and name it coin. Drag the coin spin animation in the controller. Also go to coin in the hierarchy and in the animator in controller select the animator controller that we named coin.
+
+> Create a coin pickup c# script with the same name and in it write in the OnTriggerEnter2D method that if other.tag is Player then Destroy(gameObject); Before destroying write,
+AudioSource.PlayClipAtPoint(coinPickupSFX, Camera.main.transform.position);
+This means play clip at point(which clip, where to play). Also add audio source in the coin prefab.
+
+> Now create a canvas and in its child create text mesh pro on the top left of canvas for lives count and another on the right for the score count. Now create 2 serialize field of type TextMeshProUGUI and name first one as livesText and second one as scoreText. Create the start method write:
+livesText.text = playerLives.ToString();
+This means that convert the integer type playerLives into a string array and copy the same line in the TakeLife method at the bottom in the last. Also make the canvas as the child of game session prefab.
+
+> For score count, create an int named coinScore. Create a new public void method named AddToScore(int pointsToAdd) where the int in the bracket is what it takes, it takes an integer named that and adds it to the scoreText. So in this method write coinScore += pointsToAdd; Also write scoretext.text = coinScore.ToString();
+
+> Now in the coinPickup script, create a serialized field of type int that shows the value of each coin named pointsForCoinPickup which is 100. Also above audio source line write, FindObjectOfType<GameSession>().AddToScore(pointsForCoinPickup);
+This means we are accessing the AddToScore method that we just created in the Game Session script and we are giving the value of this points to the pointsToAdd that is fed in the method.
+
+> Now we create a scene persist script using which we can create keep the scene as it is like without the enemies we killed or the coins we picked and if the lives roun out then the score and the enemies will reset and the coin and enemies will be back in the scene and the level 1 will get repeated.
